@@ -103,24 +103,24 @@ func TestKnownParallel(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	expected := 0
-	result := solveParalell(input)
+	expected := 6
+	result := solveParallelAlternative(input)
 	if result != expected {
 		t.Errorf("%s = %d; want %d", "input.txt", result, expected)
 	}
 }
 
-// func TestUnknownParallel(t *testing.T) {
-// 	input, err := loadParellelInput("input.txt")
-// 	if err != nil {
-// 		t.Error(err)
-// 	}
-// 	expected := 0
-// 	result := solveParalell(input)
-// 	if result != expected {
-// 		t.Errorf("%s = %d; want %d", "input.txt", result, expected)
-// 	}
-// }
+func TestUnknownParallel(t *testing.T) {
+	input, err := loadParellelInput("input.txt")
+	if err != nil {
+		t.Error(err)
+	}
+	expected := 0
+	result := solveParallelAlternative(input)
+	if result != expected {
+		t.Errorf("%s = %d; want %d", "input.txt", result, expected)
+	}
+}
 
 func loadParellelInput(loadLocation string) (inputValuesParallel, error) {
 	file, err := os.Open(loadLocation)

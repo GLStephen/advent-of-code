@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
+	"runtime"
+	"runtime/debug"
 	"sync"
 )
 
@@ -84,6 +87,69 @@ type foundNode struct {
 	nextNodeKey string
 }
 
+func solveParallelAlternative(input inputValuesParallel) int {
+	debug.SetMaxStack(4000000000)
+	// start with starting point
+	steps := 0
+	// start looping through the starting points!
+	directionIndex := 0
+	totalSteps := runStep(steps, directionIndex, input, input.start)
+
+	return totalSteps
+}
+
+func runStep(steps int, directionIndex int, input inputValuesParallel, start []string) int {
+	if rand.Intn(10000) == 0 {
+		fmt.Printf("Steps: %d DirectionIndex: %d Start: %+v\n", steps, directionIndex, start)
+		runtime.GC()
+	}
+
+	newStart := []string{}
+	for i := 0; i < len(start); i++ {
+		newStart = append(newStart, getDirectionalNode(input.nodes[start[i]], input.directions[directionIndex]))
+	}
+
+	// if all returned values end in Z then we are done!
+	foundItems := 0
+	for j := 0; j < len(newStart); j++ {
+		if string(newStart[j][len(newStart[j])-1:][0]) == parallelTarget {
+			foundItems++
+		} else {
+			// early break
+			break
+		}
+	}
+
+	steps++
+
+	if foundItems == len(newStart) {
+		// fall through to return
+		fmt.Printf("FOUND Steps: %d DirectionIndex: %d Start: %+v\n", steps, directionIndex, start)
+	} else {
+		directionIndex++
+		if directionIndex > len(input.directions)-1 {
+			directionIndex = 0
+		}
+		start = nil
+		steps = runStep(steps, directionIndex, input, newStart)
+	}
+
+	return steps
+}
+
+func getDirectionalNode(currentNode inputNode, direction string) string {
+	nextNodeKey := ""
+	if direction == "L" {
+		nextNodeKey = currentNode.left
+		//fmt.Printf("left: %s\n", nextNodeKey)
+	} else if direction == "R" {
+		nextNodeKey = currentNode.right
+		//fmt.Printf("right: %s\n", nextNodeKey)
+	}
+
+	return nextNodeKey
+}
+
 func solveParalell(input inputValuesParallel) int {
 	fmt.Printf("Input: %+v\n", input)
 
@@ -99,7 +165,7 @@ func solveParalell(input inputValuesParallel) int {
 				defer wg.Done()
 				// TODO: Figure out return values from waitgroups - WORTH Working on Beyond Competition
 				//foundNode := runStep(input, ele)
-				runStep(input, ele)
+				runStepOld(input, ele)
 			}(input.start[i])
 		}
 		wg.Wait()
@@ -111,7 +177,7 @@ func solveParalell(input inputValuesParallel) int {
 	return steps
 }
 
-func runStep(input inputValuesParallel, nextNodeKey string) foundNode {
+func runStepOld(input inputValuesParallel, nextNodeKey string) foundNode {
 	// for key, nodes := range input.nodes {
 	// 	fmt.Printf("Key -%+v- Node %+v\n", key, nodes)
 	// }
