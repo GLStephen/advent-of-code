@@ -19,17 +19,29 @@ func TestKnownSolve(t *testing.T) {
 	}
 }
 
-// func TestKnownSolve2(t *testing.T) {
-// 	input, err := loadInput("known_solve_2.txt")
-// 	if err != nil {
-// 		t.Error(err)
-// 	}
-// 	expected := 6
-// 	result := solve(input)
-// 	if result != expected {
-// 		t.Errorf("%s = %d; want %d", "known_solve_2.txt", result, expected)
-// 	}
-// }
+func TestKnownSolve2(t *testing.T) {
+	input, err := loadInput("known_solve_2.txt")
+	if err != nil {
+		t.Error(err)
+	}
+	expected := 6
+	result := solve(input)
+	if result != expected {
+		t.Errorf("%s = %d; want %d", "known_solve_2.txt", result, expected)
+	}
+}
+
+func TestUnknownSolve(t *testing.T) {
+	input, err := loadInput("input.txt")
+	if err != nil {
+		t.Error(err)
+	}
+	expected := 0
+	result := solve(input)
+	if result != expected {
+		t.Errorf("%s = %d; want %d", "input.txt", result, expected)
+	}
+}
 
 func loadInput(loadLocation string) (inputValues, error) {
 	file, err := os.Open(loadLocation)
@@ -48,7 +60,7 @@ func loadInput(loadLocation string) (inputValues, error) {
 	}
 
 	var nodes = make(map[string]inputNode)
-	var start = ""
+	var start = "AAA" // it's always AAA
 	for scanner.Scan() {
 		// skip blanks
 		line := scanner.Text()
@@ -62,9 +74,10 @@ func loadInput(loadLocation string) (inputValues, error) {
 
 			inputNode := inputNode{left: nodeElements[0], right: nodeElements[1]}
 			nodes[strings.Trim(linePieces[0], " ")] = inputNode
-			if start == "" {
-				start = strings.Trim(linePieces[0], " ")
-			}
+			// START IS ALWAYS AAA
+			// if start == "" {
+			// 	start = strings.Trim(linePieces[0], " ")
+			// }
 			//nodes = append(nodes, inputNode)
 		}
 	}

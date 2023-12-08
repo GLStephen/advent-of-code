@@ -22,46 +22,47 @@ func main() {
 }
 
 func solve(input inputValues) int {
-	fmt.Printf("Input: %+v\n", input)
+	fmt.Printf("Input: %+v\n", input.directions)
 
-	for key, nodes := range input.nodes {
-		fmt.Printf("Key -%+v- Node %+v\n", key, nodes)
-	}
+	// for key, nodes := range input.nodes {
+	// 	fmt.Printf("Key -%+v- Node %+v\n", key, nodes)
+	// }
 
-	steps := 1
+	steps := 0
 	nextNodeKey := input.start
-	nextNode := input.nodes[nextNodeKey]
+	currentNode := input.nodes[nextNodeKey]
 	found := false
 	iterations := 0
 	for !found {
-		fmt.Print("Still Not Found \n")
-		for mapIndex := 0; mapIndex < len(input.directions); mapIndex++ {
-			direction := input.directions[mapIndex]
-			fmt.Printf("Moving: %s on %+v\n", direction, nextNode)
+		directionsIndex := 0
+		//fmt.Print("Still Not Found \n")
+		for directionsIndex < len(input.directions) {
+			currentNodeKey := nextNodeKey
+			//fmt.Printf("Node: %+v\n", nextNode)
+			direction := input.directions[directionsIndex]
 			if direction == "L" {
-				nextNodeKey = nextNode.left
-				fmt.Printf("left: %s\n", nextNodeKey)
+				nextNodeKey = currentNode.left
+				//fmt.Printf("left: %s\n", nextNodeKey)
 			} else if direction == "R" {
-				nextNodeKey = nextNode.right
-				fmt.Printf("right: %s\n", nextNodeKey)
+				nextNodeKey = currentNode.right
+				//fmt.Printf("right: %s\n", nextNodeKey)
 			} else {
-				fmt.Printf("Unknown Direction: %s\n", direction)
+				//fmt.Printf("Unknown Direction: %s\n", direction)
 				return 0
 			}
 			steps++
+			fmt.Printf("Step: %d Current Node Key: -%s- Current Node: %+v Direction: -%s- Next Node Key: -%s-\n", steps, currentNodeKey, currentNode, direction, nextNodeKey)
 			if nextNodeKey == target {
-				fmt.Print("Found")
+				fmt.Print("Found \n")
 				found = true
 				break
 			}
-			nextNode := input.nodes[nextNodeKey]
-			fmt.Printf("Input: %+v\n", input.nodes)
-			fmt.Printf("Next Node Key: %s Node: %+v\n", nextNodeKey, nextNode)
+			currentNode = input.nodes[nextNodeKey]
+			// fmt.Printf("Moving: %s to %+v\n", direction, nextNode)
+			// fmt.Printf("Input: %+v\n", input.nodes)
+			directionsIndex++
 		}
 		iterations++
-		if iterations > 5 {
-			found = true
-		}
 	}
 
 	fmt.Printf("Target: %s Reached In: %d Steps\n", target, steps)
