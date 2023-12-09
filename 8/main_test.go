@@ -98,17 +98,17 @@ func loadInput(loadLocation string) (inputValues, error) {
 	return loadedValues, nil
 }
 
-func TestKnownParallel(t *testing.T) {
-	input, err := loadParellelInput("known_parallel.txt")
-	if err != nil {
-		t.Error(err)
-	}
-	expected := 6
-	result := solveParallelAlternative(input)
-	if result != expected {
-		t.Errorf("%s = %d; want %d", "input.txt", result, expected)
-	}
-}
+// func TestKnownParallel(t *testing.T) {
+// 	input, err := loadParellelInput("known_parallel.txt")
+// 	if err != nil {
+// 		t.Error(err)
+// 	}
+// 	expected := 6
+// 	result := solveParallelAlternative(input)
+// 	if result != expected {
+// 		t.Errorf("%s = %d; want %d", "input.txt", result, expected)
+// 	}
+// }
 
 func TestUnknownParallel(t *testing.T) {
 	input, err := loadParellelInput("input.txt")

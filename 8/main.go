@@ -93,9 +93,44 @@ func solveParallelAlternative(input inputValuesParallel) int {
 	steps := 0
 	// start looping through the starting points!
 	directionIndex := 0
-	totalSteps := runStep(steps, directionIndex, input, input.start)
+	determineRecursion(steps, directionIndex, input, input.start[0:1], input.start[0:1][0])
 
-	return totalSteps
+	return 0
+}
+
+func determineRecursion(steps int, directionIndex int, input inputValuesParallel, start []string, targetStart string) {
+	runtime.GC()
+
+	newStart := []string{}
+	for i := 0; i < len(start); i++ {
+		newStart = append(newStart, getDirectionalNode(input.nodes[start[i]], input.directions[directionIndex]))
+	}
+
+	// if all returned values end in Z then we are done!
+	foundItems := 0
+	for j := 0; j < len(newStart); j++ {
+		fmt.Printf("%+v %+v\n", newStart, targetStart)
+		if newStart[j] == targetStart {
+			fmt.Printf("Steps: %d DirectionIndex: %d Start: %+v\n", steps, directionIndex, start)
+			foundItems++
+		} else {
+			// early break
+			break
+		}
+	}
+
+	steps++
+
+	directionIndex++
+	if directionIndex == len(input.directions) {
+		directionIndex = 0
+	}
+
+	if steps > 100000 {
+		fmt.Printf("Stop Recursion")
+	} else {
+		determineRecursion(steps, directionIndex, input, newStart, targetStart)
+	}
 }
 
 func runStep(steps int, directionIndex int, input inputValuesParallel, start []string) int {
