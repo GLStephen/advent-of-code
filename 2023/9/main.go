@@ -17,6 +17,7 @@ func main() {
 }
 
 func solve(input problemInput) int {
+	// I think I can just summarize the differences between each measurement and not correlate them to the history but need to verify
 	//allDifferences := []measurementHistory{}
 	for _, history := range input.histories {
 		differences := []measurementHistory{}
