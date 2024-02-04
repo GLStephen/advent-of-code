@@ -21,3 +21,7 @@ How many strings are nice?
 * It contains **AT LEAST** three vowels (aeiou only), like aei, xazegov, or aeiouaeiouaeiou.
 * It contains **AT LEAST** one letter that appears twice in a row, like xx, abcdde (dd), or aabbccdd (aa, bb, cc, or dd).
 * **DOES NOT CONTAIN** the strings ab, cd, pq, or xy, **even if they are part of one** of the other requirements.
+
+# Bonus
+
+Need to get smarter: https://stackoverflow.com/questions/1660694/regular-expression-to-match-any-character-being-repeated-more-than-10-times
