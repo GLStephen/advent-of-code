@@ -84,11 +84,43 @@ func containsRune(s []rune, r rune) bool {
 	return false
 }
 
-func containsString(s []string, r string) bool {
-	for _, c := range s {
-		if c == r {
+func solveBonus(input []string) (int, int, error) {
+	nice := 0
+	naughty := 0
+
+	for _, line := range input {
+		if hasNonOverlappingPair(line) && hasRepeatWithOneBetween(line) {
+			nice++
+		} else {
+			naughty++
+		}
+	}
+
+	return nice, naughty, nil
+}
+
+func hasNonOverlappingPair(line string) bool {
+	paddedString := fmt.Sprintf("~%s+", line)
+	fmt.Printf("testing overlap %s\n", line)
+	for i := 0; i < len(paddedString)-1; i++ {
+		pair := paddedString[i : i+2]
+		fmt.Printf("%d %s\n", strings.Count(paddedString, pair), pair)
+		if strings.Count(paddedString, pair) >= 2 {
 			return true
 		}
 	}
+	return false
+}
+
+func hasRepeatWithOneBetween(line string) bool {
+	paddedString := fmt.Sprintf("~%s+", line)
+	fmt.Printf("testing repeat %s\n", line)
+	for i := 0; i < len(paddedString)-2; i++ {
+		fmt.Printf("%s %s\n", string(paddedString[i]), string(paddedString[i+2]))
+		if paddedString[i] == paddedString[i+2] {
+			return true
+		}
+	}
+
 	return false
 }
